@@ -9,6 +9,8 @@ import {
   TextInput,
   TouchableOpacity,
   StatusBar,
+  Image,
+  LayoutAnimation,
 } from 'react-native';
 import * as firebase from 'firebase';
 
@@ -29,9 +31,21 @@ export default class LoginScreen extends Component {
   };
 
   render() {
+    LayoutAnimation.easeInEaseOut();
+
     return (
       <View style={styles.container}>
         <StatusBar barStyle="light-content" />
+        <Image
+          source={require('../assets/authHeader.png')}
+          style={{marginTop: -210, marginLeft: -50}}
+        />
+
+        <Image
+          source={require('../assets/authHeader.png')}
+          style={{position: 'absolute', bottom: -350, right: -60}}
+        />
+
         <Text style={styles.greeting}>{`Hello again. \nWelcome back.`}</Text>
 
         <View style={styles.errorMessage}>

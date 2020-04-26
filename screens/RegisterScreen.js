@@ -8,6 +8,8 @@ import {
   StyleSheet,
   TextInput,
   TouchableOpacity,
+  StatusBar,
+  Image,
 } from 'react-native';
 import * as firebase from 'firebase';
 
@@ -36,6 +38,17 @@ export default class RegisterScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
+        <StatusBar barStyle="light-content" />
+        <Image
+          source={require('../assets/authHeader.png')}
+          style={{marginTop: -260, marginLeft: -50}}
+        />
+
+        <Image
+          source={require('../assets/authHeader.png')}
+          style={{position: 'absolute', bottom: -350, right: -60}}
+        />
+
         <Text
           style={styles.greeting}>{`Hello. \nSign Up to get started.`}</Text>
 
