@@ -25,25 +25,16 @@ firebase.initializeApp(firebaseConfig);
 
 const Stack = createStackNavigator();
 
-// const AppStack = (
-//   <Stack.Navigator>
-//     <Stack.Screen name="Home" component={HomeScreen} />
-//   </Stack.Navigator>
-// );
-
-// const AuthStack = (
-//   <Stack.Navigator>
-//     <Stack.Screen name="Login" component={LoginScreen} />
-//     <Stack.Screen name="Register" component={RegisterScreen} />
-//   </Stack.Navigator>
-// );
-
 export default function MainNavigator() {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Loading">
         <Stack.Screen name="Loading" component={LoadingScreen} />
-        <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen
+          name="Login"
+          component={LoginScreen}
+          options={{headerShown: false}}
+        />
         <Stack.Screen name="Register" component={RegisterScreen} />
         <Stack.Screen name="Home" component={HomeScreen} />
       </Stack.Navigator>

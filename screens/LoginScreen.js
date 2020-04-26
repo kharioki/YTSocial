@@ -8,6 +8,7 @@ import {
   StyleSheet,
   TextInput,
   TouchableOpacity,
+  StatusBar,
 } from 'react-native';
 import * as firebase from 'firebase';
 
@@ -30,6 +31,7 @@ export default class LoginScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
+        <StatusBar barStyle="light-content" />
         <Text style={styles.greeting}>{`Hello again. \nWelcome back.`}</Text>
 
         <View style={styles.errorMessage}>
