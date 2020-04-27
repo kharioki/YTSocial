@@ -12,6 +12,9 @@ import {
   Image,
 } from 'react-native';
 import * as firebase from 'firebase';
+import Icon from 'react-native-vector-icons/Ionicons';
+
+Icon.loadFont();
 
 export default class RegisterScreen extends Component {
   state = {
@@ -49,8 +52,31 @@ export default class RegisterScreen extends Component {
           style={{position: 'absolute', bottom: -350, right: -60}}
         />
 
-        <Text
-          style={styles.greeting}>{`Hello. \nSign Up to get started.`}</Text>
+        <TouchableOpacity
+          style={styles.back}
+          onPress={() => this.props.navigation.goBack()}>
+          <Icon name="ios-arrow-round-back" size={32} color="#fff" />
+        </TouchableOpacity>
+
+        <View
+          style={{
+            position: 'absolute',
+            top: 64,
+            alignItems: 'center',
+            width: '100%',
+          }}>
+          <Text
+            style={styles.greeting}>{`Hello. \nSign Up to get started.`}</Text>
+
+          <TouchableOpacity style={styles.avatar}>
+            <Icon
+              name="ios-add"
+              size={40}
+              color="#fff"
+              style={{marginTop: 6, marginLeft: 2}}
+            />
+          </TouchableOpacity>
+        </View>
 
         <View style={styles.errorMessage}>
           {this.state.errorMessage && (
@@ -153,5 +179,25 @@ const styles = StyleSheet.create({
     height: 52,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  back: {
+    position: 'absolute',
+    top: 48,
+    left: 32,
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: 'rgba(21, 22, 48, 0.4)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  avatar: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    backgroundColor: '#e1e2e6',
+    marginTop: 48,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

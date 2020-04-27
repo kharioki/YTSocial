@@ -1,34 +1,39 @@
-import React, {Component} from 'react';
+/* eslint-disable react-native/no-inline-styles */
+/* eslint-disable no-shadow */
+import React, {useState, useEffect} from 'react';
 
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  LayoutAnimation,
+} from 'react-native';
 import * as firebase from 'firebase';
 
-export default class HomeScreen extends Component {
-  state = {
-    email: '',
-    displayName: '',
-  };
+const HomeScreen = () => {
+  const [email, setEmail] = useState('');
+  const [displayName, setDisplayName] = useState('');
 
-  componentDidMount() {
+  useEffect(() => {
     const {email, displayName} = firebase.auth().currentUser;
 
-    this.setState({email, displayName});
-  }
+    setEmail(email);
+    setDisplayName(displayName);
+  }, []);
 
-  signOutUser = () => firebase.auth().signOut();
+  const signOutUser = () => firebase.auth().signOut();
 
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text>Hi {this.state.email}</Text>
-
-        <TouchableOpacity style={{marginTop: 32}} onPress={this.signOutUser}>
-          <Text>Logout</Text>
-        </TouchableOpacity>
-      </View>
-    );
-  }
-}
+  LayoutAnimation.easeInEaseOut();
+  return (
+    <View style={styles.container}>
+      <Text>Hi {email}</Text>
+      <TouchableOpacity style={{marginTop: 32}} onPress={signOutUser}>
+        <Text>Logout</Text>
+      </TouchableOpacity>
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -37,3 +42,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 });
+
+export default HomeScreen;
