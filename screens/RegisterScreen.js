@@ -12,9 +12,9 @@ import {
   Image,
 } from 'react-native';
 import * as firebase from 'firebase';
-import Icon from 'react-native-vector-icons/Ionicons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
-Icon.loadFont();
+Ionicons.loadFont();
 
 export default class RegisterScreen extends Component {
   state = {
@@ -55,7 +55,7 @@ export default class RegisterScreen extends Component {
         <TouchableOpacity
           style={styles.back}
           onPress={() => this.props.navigation.goBack()}>
-          <Icon name="ios-arrow-round-back" size={32} color="#fff" />
+          <Ionicons name="ios-arrow-round-back" size={32} color="#fff" />
         </TouchableOpacity>
 
         <View
@@ -69,7 +69,7 @@ export default class RegisterScreen extends Component {
             style={styles.greeting}>{`Hello. \nSign Up to get started.`}</Text>
 
           <TouchableOpacity style={styles.avatar}>
-            <Icon
+            <Ionicons
               name="ios-add"
               size={40}
               color="#fff"

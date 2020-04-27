@@ -63,3 +63,4 @@ buck-out/
 
 # variables
 .env
+config.js

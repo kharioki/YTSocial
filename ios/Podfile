@@ -46,6 +46,8 @@ end
 
 target 'YTSocial' do
   # Pods for YTSocial
+  permissions_path = '../node_modules/react-native-permissions/ios'
+
   pod 'FBLazyVector', :path => "../node_modules/react-native/Libraries/FBLazyVector"
   pod 'FBReactNativeSpec', :path => "../node_modules/react-native/Libraries/FBReactNativeSpec"
   pod 'RCTRequired', :path => "../node_modules/react-native/Libraries/RCTRequired"
@@ -76,6 +78,8 @@ target 'YTSocial' do
   pod 'DoubleConversion', :podspec => '../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec'
   pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
+
+  pod 'Permission-Camera', :path => "#{permissions_path}/Camera.podspec"
 
   target 'YTSocialTests' do
     inherit! :complete

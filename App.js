@@ -20,19 +20,13 @@ import PostScreen from './screens/PostScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import NotificationScreen from './screens/NotificationScreen';
 
-import * as firebase from 'firebase';
+import firebase from 'firebase';
+import {firebaseKeys} from './config';
+// import Fire from './fire';
 
-// var firebaseConfig = process.env.firebaseKeys;
-var firebaseConfig = {
-  apiKey: 'AIzaSyC85LkjuY6LpzwHHzqWF4jfIXY0cRkvL78',
-  authDomain: 'socialapp-72887.firebaseapp.com',
-  databaseURL: 'https://socialapp-72887.firebaseio.com',
-  projectId: 'socialapp-72887',
-  storageBucket: 'socialapp-72887.appspot.com',
-  messagingSenderId: '494285609573',
-  appId: '1:494285609573:web:be009437d567e2464b448c',
-};
 // Initialize Firebase
+var firebaseConfig = firebaseKeys;
+
 firebase.initializeApp(firebaseConfig);
 
 const AuthStack = createStackNavigator();
@@ -82,6 +76,7 @@ const Tabs = () => (
       name="Post"
       component={PostScreen}
       options={{
+        mode: 'modal',
         tabBarIcon: ({color}) => (
           <Ionicons
             name="ios-add-circle"
