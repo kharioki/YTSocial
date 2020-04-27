@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 /* eslint-disable no-shadow */
 /* eslint-disable prettier/prettier */
 import 'react-native-gesture-handler';
@@ -17,6 +18,7 @@ import RegisterScreen from './screens/RegisterScreen';
 import MessageScreen from './screens/MessageScreen';
 import PostScreen from './screens/PostScreen';
 import ProfileScreen from './screens/ProfileScreen';
+import NotificationScreen from './screens/NotificationScreen';
 
 import * as firebase from 'firebase';
 
@@ -50,13 +52,13 @@ const AuthStackScreen = () => (
 );
 
 const Tab = createBottomTabNavigator();
-// const tintColor = '#e9446a';
-// const tintColor2 = '#8A8F9E';
+
 const Tabs = () => (
   <Tab.Navigator
     tabBarOptions={{
-      activeTintColor: 'tomato',
-      inactiveTintColor: 'gray',
+      activeTintColor: '#161f3d',
+      inactiveTintColor: '#b8bbc4',
+      showLabel: false,
     }}>
     <Tab.Screen
       name="Home"
@@ -81,7 +83,26 @@ const Tabs = () => (
       component={PostScreen}
       options={{
         tabBarIcon: ({color}) => (
-          <Ionicons name="ios-add-circle" size={24} color={color} />
+          <Ionicons
+            name="ios-add-circle"
+            size={48}
+            color="#e9446a"
+            style={{
+              shadowColor: '#e9446a',
+              shadowOffset: {width: 0, height: 0},
+              shadowRadius: 10,
+              shadowOpacity: 0.3,
+            }}
+          />
+        ),
+      }}
+    />
+    <Tab.Screen
+      name="Notification"
+      component={NotificationScreen}
+      options={{
+        tabBarIcon: ({color}) => (
+          <Ionicons name="ios-notifications" size={24} color={color} />
         ),
       }}
     />
