@@ -1,6 +1,8 @@
+/* eslint-disable no-undef */
+/* eslint-disable prettier/prettier */
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable no-shadow */
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 
 import {View, Text, StyleSheet, FlatList, Image} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';

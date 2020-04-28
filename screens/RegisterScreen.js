@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable react-native/no-inline-styles */
-import React, {Component} from 'react';
+import React, {useState, useEffect} from 'react';
 
 import {
   View,
@@ -11,128 +11,165 @@ import {
   StatusBar,
   Image,
 } from 'react-native';
-import * as firebase from 'firebase';
+import firebase from 'firebase';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
+import ImagePicker from 'react-native-image-picker';
+
+import Fire from '../fire';
 
 Ionicons.loadFont();
 
-export default class RegisterScreen extends Component {
-  state = {
+const RegisterScreen = props => {
+  const [cameraGranted, setCameraGranted] = useState(false);
+  const [userInfo, setUserInfo] = useState({
+    avatar: null,
     name: '',
     email: '',
     password: '',
-    errorMessage: null,
+  });
+  const [errorMessage, setErrorMessage] = useState(null);
+
+  // check camera permission
+  const handleCameraPermission = async () => {
+    const res = await check(PERMISSIONS.IOS.CAMERA);
+
+    if (res === RESULTS.GRANTED) {
+      setCameraGranted(true);
+    } else if (res === RESULTS.DENIED) {
+      const res2 = await request(PERMISSIONS.IOS.CAMERA);
+      res2 === RESULTS.GRANTED
+        ? setCameraGranted(true)
+        : setCameraGranted(false);
+    }
   };
 
-  handleSignUp = () => {
-    const {name, email, password} = this.state;
+  const {avatar, name, email, password} = userInfo;
 
-    firebase
-      .auth()
-      .createUserWithEmailAndPassword(email, password)
-      .then(userCredentials => {
-        return userCredentials.user.updateProfile({
-          displayName: name,
-        });
-      })
-      .catch(error => this.setState({errorMessage: error.message}));
+  const handleSignUp = () => {
+    Fire.shared.createUser(userInfo);
   };
 
-  render() {
-    return (
-      <View style={styles.container}>
-        <StatusBar barStyle="light-content" />
-        <Image
-          source={require('../assets/authHeader.png')}
-          style={{marginTop: -260, marginLeft: -50}}
-        />
+  const handlePickAvatar = () => {
+    const options = {
+      title: 'Select Image',
+      storageOptions: {
+        skipBackup: true,
+        path: 'images',
+      },
+    };
 
-        <Image
-          source={require('../assets/authHeader.png')}
-          style={{position: 'absolute', bottom: -350, right: -60}}
-        />
+    ImagePicker.launchImageLibrary(options, response => {
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      } else {
+        setUserInfo({...userInfo, avatar: response.uri});
+      }
+    });
+  };
+
+  useEffect(() => {
+    handleCameraPermission();
+  }, []);
+
+  return (
+    <View style={styles.container}>
+      <StatusBar barStyle="light-content" />
+      <Image
+        source={require('../assets/authHeader.png')}
+        style={{marginTop: -260, marginLeft: -50}}
+      />
+
+      <Image
+        source={require('../assets/authHeader.png')}
+        style={{position: 'absolute', bottom: -350, right: -60}}
+      />
+
+      <TouchableOpacity
+        style={styles.back}
+        onPress={() => props.navigation.goBack()}>
+        <Ionicons name="ios-arrow-round-back" size={32} color="#fff" />
+      </TouchableOpacity>
+
+      <View
+        style={{
+          position: 'absolute',
+          top: 64,
+          alignItems: 'center',
+          width: '100%',
+        }}>
+        <Text
+          style={styles.greeting}>{`Hello. \nSign Up to get started.`}</Text>
 
         <TouchableOpacity
-          style={styles.back}
-          onPress={() => this.props.navigation.goBack()}>
-          <Ionicons name="ios-arrow-round-back" size={32} color="#fff" />
-        </TouchableOpacity>
-
-        <View
-          style={{
-            position: 'absolute',
-            top: 64,
-            alignItems: 'center',
-            width: '100%',
-          }}>
-          <Text
-            style={styles.greeting}>{`Hello. \nSign Up to get started.`}</Text>
-
-          <TouchableOpacity style={styles.avatar}>
-            <Ionicons
-              name="ios-add"
-              size={40}
-              color="#fff"
-              style={{marginTop: 6, marginLeft: 2}}
-            />
-          </TouchableOpacity>
-        </View>
-
-        <View style={styles.errorMessage}>
-          {this.state.errorMessage && (
-            <Text style={styles.error}>{this.state.errorMessage}</Text>
+          style={styles.avatarPlaceholder}
+          onPress={handlePickAvatar}>
+          {avatar !== null && (
+            <Image source={{uri: avatar}} style={styles.avatar} />
           )}
-        </View>
-
-        <View style={styles.form}>
-          <View>
-            <Text style={styles.inputTitle}>Full Name</Text>
-            <TextInput
-              style={styles.input}
-              autoCapitalize="none"
-              onChangeText={name => this.setState({name})}
-              value={this.state.name}
-            />
-          </View>
-
-          <View style={{marginTop: 32}}>
-            <Text style={styles.inputTitle}>Email Address</Text>
-            <TextInput
-              style={styles.input}
-              autoCapitalize="none"
-              onChangeText={email => this.setState({email})}
-              value={this.state.email}
-            />
-          </View>
-
-          <View style={{marginTop: 32}}>
-            <Text style={styles.inputTitle}>Password</Text>
-            <TextInput
-              style={styles.input}
-              autoCapitalize="none"
-              secureTextEntry
-              onChangeText={password => this.setState({password})}
-              value={this.state.password}
-            />
-          </View>
-        </View>
-
-        <TouchableOpacity style={styles.button} onPress={this.handleSignUp}>
-          <Text style={{color: '#fff', fontWeight: '500'}}>Sign Up</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={{alignSelf: 'center', marginTop: 32}}
-          onPress={() => this.props.navigation.navigate('Login')}>
-          <Text style={{color: '#414959', fontSize: 13}}>
-            Already have an account?{' '}
-            <Text style={{color: '#e9446a', fontWeight: '500'}}>Sign In</Text>
-          </Text>
+          <Ionicons
+            name="ios-add"
+            size={40}
+            color="#fff"
+            style={{marginTop: 6, marginLeft: 2}}
+          />
         </TouchableOpacity>
       </View>
-    );
-  }
-}
+
+      <View style={styles.errorMessage}>
+        {errorMessage && <Text style={styles.error}>{errorMessage}</Text>}
+      </View>
+
+      <View style={styles.form}>
+        <View>
+          <Text style={styles.inputTitle}>Full Name</Text>
+          <TextInput
+            style={styles.input}
+            autoCapitalize="none"
+            onChangeText={val => setUserInfo({...userInfo, name: val})}
+            value={name}
+          />
+        </View>
+
+        <View style={{marginTop: 32}}>
+          <Text style={styles.inputTitle}>Email Address</Text>
+          <TextInput
+            style={styles.input}
+            autoCapitalize="none"
+            onChangeText={val => setUserInfo({...userInfo, email: val})}
+            value={email}
+          />
+        </View>
+
+        <View style={{marginTop: 32}}>
+          <Text style={styles.inputTitle}>Password</Text>
+          <TextInput
+            style={styles.input}
+            autoCapitalize="none"
+            secureTextEntry
+            onChangeText={val => setUserInfo({...userInfo, password: val})}
+            value={password}
+          />
+        </View>
+      </View>
+
+      <TouchableOpacity style={styles.button} onPress={handleSignUp}>
+        <Text style={{color: '#fff', fontWeight: '500'}}>Sign Up</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={{alignSelf: 'center', marginTop: 32}}
+        onPress={() => props.navigation.navigate('Login')}>
+        <Text style={{color: '#414959', fontSize: 13}}>
+          Already have an account?{' '}
+          <Text style={{color: '#e9446a', fontWeight: '500'}}>Sign In</Text>
+        </Text>
+      </TouchableOpacity>
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -191,7 +228,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  avatar: {
+  avatarPlaceholder: {
     width: 100,
     height: 100,
     borderRadius: 50,
@@ -200,4 +237,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  avatar: {
+    position: 'absolute',
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+  },
 });
+
+export default RegisterScreen;
