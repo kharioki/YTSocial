@@ -4,6 +4,7 @@ import React, {useState, useEffect} from 'react';
 
 import {View, Text, StyleSheet, FlatList, Image} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import moment from 'moment';
 
 Ionicons.loadFont();
 
@@ -56,7 +57,9 @@ const HomeScreen = () => {
             }}>
             <View>
               <Text style={styles.name}>{post.name}</Text>
-              <Text style={styles.timestamp}>{post.timestamp}</Text>
+              <Text style={styles.timestamp}>
+                {moment(post.timestamp).fromNow()}
+              </Text>
             </View>
 
             <Ionicons name="ios-more" size={24} color="#73788b" />
