@@ -17,9 +17,6 @@ import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
 import Fire from '../fire';
 import ImagePicker from 'react-native-image-picker';
 
-import firebase from 'firebase';
-import 'firebase/firestore';
-
 const PostScreen = props => {
   const [cameraGranted, setCameraGranted] = useState(false);
   const [image, setImage] = useState('');
@@ -67,6 +64,8 @@ const PostScreen = props => {
         localUri: image,
       })
       .then(ref => {
+        console.log(ref);
+        alert(ref);
         setText('');
         setImage('');
         props.navigation.goBack();
@@ -100,7 +99,7 @@ const PostScreen = props => {
           numberOfLines={4}
           style={{flex: 1}}
           placeholder="Want to share something?"
-          onChangeText={inputText => setText(inputText)}
+          onChangeText={_text => setText(_text)}
           value={text}
         />
       </View>

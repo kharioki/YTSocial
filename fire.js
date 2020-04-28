@@ -1,12 +1,26 @@
 /* eslint-disable prettier/prettier */
 import firebase from 'firebase';
-
+require('firebase/firestore');
 import {firebaseKeys} from './config';
 
 class Fire {
-  // constructor() {
-  //   firebase.initializeApp(firebaseKeys);
-  // }
+  constructor() {
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseKeys);
+    }
+  }
+
+  get firestore() {
+    return firebase.firestore();
+  }
+
+  get uid() {
+    return (firebase.auth().currentUser || {}).uid;
+  }
+
+  get timestamp() {
+    return Date.now();
+  }
 
   addPost = async ({text, localUri}) => {
     const remoteUri = await this.uploadPhotoAsync(localUri);
@@ -23,8 +37,8 @@ class Fire {
         .then(ref => {
           res(ref);
         })
-        .catch(err => {
-          rej(err);
+        .catch(error => {
+          rej(error);
         });
     });
   };
@@ -54,18 +68,6 @@ class Fire {
       );
     });
   };
-
-  get firestore() {
-    return firebase.firestore();
-  }
-
-  get uid() {
-    return (firebase.auth().currentUser || {}).uid;
-  }
-
-  get timestamp() {
-    return Date.now();
-  }
 }
 
 Fire.shared = new Fire();

@@ -20,14 +20,14 @@ import PostScreen from './screens/PostScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import NotificationScreen from './screens/NotificationScreen';
 
+import Fire from './fire';
+
 import firebase from 'firebase';
 import {firebaseKeys} from './config';
-// import Fire from './fire';
 
 // Initialize Firebase
-var firebaseConfig = firebaseKeys;
-
-firebase.initializeApp(firebaseConfig);
+// var firebaseConfig = firebaseKeys;
+// firebase.initializeApp(firebaseConfig);
 
 const AuthStack = createStackNavigator();
 const AuthStackScreen = () => (
